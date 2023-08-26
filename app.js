@@ -8,17 +8,18 @@ const { INTERNAL_SERVER_ERROR_STATUS_CODE } = require('./utils/errors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes');
 
-const { PORT = 3000 } = process.env;
+const { PORT } = process.env;
+const { DB_URL } = process.env;
 const app = express();
 
 app.use(cors({
   origin: [
-    // 'https://ivanyurlov.nomoreparties.co',
-    // 'http://ivanyurlov.nomoreparties.co',
+    'https://ivanyurlov.nomoredomainsicu.ru',
+    'http://ivanyurlov.nomoredomainsicu.ru',
     'http://localhost:3000'],
 }));
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
 
