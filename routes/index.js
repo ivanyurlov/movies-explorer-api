@@ -10,7 +10,6 @@ const auth = require('../middlewares/auth');
 router.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    name: Joi.string().min(2).max(30),
     password: Joi.string().required().min(4),
   }),
 }), login);

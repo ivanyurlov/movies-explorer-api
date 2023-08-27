@@ -6,11 +6,10 @@ const {
 const NotFoundError = require('../utils/handleErrors/not-found-err');
 const BadRequestError = require('../utils/handleErrors/bad-request-err');
 const ForbiddenError = require('../utils/handleErrors/forbidden-err');
-const DublicationError = require('../utils/handleErrors/dublication-err');
 
-module.exports.getMovies = (_req, res, next) => {
-  Movie.find({})
-    .then((movie) => res.status(OK_STATUS_CODE).send(movie))
+module.exports.getMovies = (req, res, next) => {
+  Movie.find({ owner: req.user._id })
+    .then((movies) => res.status(OK_STATUS_CODE).send(movies))
     .catch((err) => next(err));
 };
 
@@ -47,9 +46,6 @@ module.exports.createMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequestError('Переданы некорректные данные при создании фильма'));
-      }
-      if (err.code === 11000) {
-        return next(new DublicationError('Фильм с такими данными уже создан'));
       }
       return next(err);
     });

@@ -67,13 +67,16 @@ module.exports.editProfileUserInfo = (req, res, next) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequestError('Переданы некорректные данные при редактировании пользователя'));
       }
+      if (err.code === 11000) {
+        return next(new DublicationError('Пользователь с такой почтой уже зарегистрирован'));
+      }
       return next(err);
     });
 };
 
 module.exports.login = (req, res, next) => {
-  const { email, name, password } = req.body;
-  return User.findUserByCredentials(email, name, password)
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key', { expiresIn: '7d' });
 

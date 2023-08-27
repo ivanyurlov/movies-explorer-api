@@ -10,7 +10,7 @@ moviesRoutes.post('/movies', celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
-    duration: Joi.number().required(),
+    duration: Joi.number().integer().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
     image: Joi.string().required().pattern(URL_REGEXP),
@@ -18,7 +18,7 @@ moviesRoutes.post('/movies', celebrate({
     thumbnail: Joi.string().required().pattern(URL_REGEXP),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    movieId: Joi.number().required(),
+    movieId: Joi.number().integer().required(),
   }),
 }), createMovie);
 moviesRoutes.delete('/movies/:_id', celebrate({
